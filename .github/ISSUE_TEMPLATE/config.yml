@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Make a suggestion
+    url: https://github.com/npm/roadmap/discussions/
+    about: Have an idea for npm? Open a discussion!
+  - name: npm CLI RFC
+    url: https://github.com/npm/rfcs
+    about: Want to propose a change to the CLI? Open an RFC!
+  - name: npm docs
+    url: https://docs.npmjs.com/
+    about: Need help with using npm? Check out our docs!
+  - name: npm.community
+    url: https://npm.community/
+    about: If you need support for problems or to report an incident please consult npm.community
+  - name: npm status page
+    url: https://status.npmjs.org/
+    about: Check the status of npm services on our status page.

@@ -1,0 +1,42 @@
+name: Issue Maintenance
+
+on:
+  issues:
+    types: [opened, transferred]
+
+jobs:
+  lock-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lock new issues when opened
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.lock({
+              issue_number: ${{ github.event.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
+  close-unauthorized-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close issue if opened by non authorized user
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const creator = context.payload.sender.login;
+            const response = await github.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: creator
+            });
+            if (response.data.permission === 'none' || response.data.permission === 'read') {
+              github.issues.update({
+                issue_number: ${{ github.event.issue.number }},
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'closed'
+              });
+            }
